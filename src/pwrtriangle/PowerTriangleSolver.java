@@ -3,14 +3,14 @@ package pwrtriangle;
 import javax.swing.*;
 
 /**
- * @brief Entry point class
+ * Entry point class
  *
  * This class is the entry to the Power Triangle Solver application.
  */
 public class PowerTriangleSolver {
 
     /**
-     * @brief Create and show the main GUI frame.
+     * Create and show the main GUI frame.
      */
     private static void createAndShowGui() {
 
@@ -25,7 +25,7 @@ public class PowerTriangleSolver {
     }
 
     /**
-     * @brief Application entry point.
+     * Application entry point.
      * @param args the command line arguments (unused)
      */
     public static void main(String[] args) {
