@@ -12,9 +12,31 @@ import javax.swing.*;
  */
 public class Panel extends Box implements ActionListener {
 
-    static private final String PQ_ACTION = "PQ";
-    static private final String PPF_ACTION = "PPF";
-    static private final String QPF_ACTION = "QPF";
+    static private final int NUM_MODES = 3;
+    static private final int PQ_MODE = 0;
+    static private final int PPF_MODE = 1;
+    static private final int QPF_MODE = 2;
+    
+    private final String[] MODES;
+    private final String[] OP1_LABELS;
+    private final String[] OP1_UNITS;
+    private final String[] OP2_LABELS;
+    private final String[] OP2_UNITS;
+    private final String[] RESULT_LABELS;
+    private final String[] RESULT_UNITS;
+
+    
+    private JComboBox mode;
+    private JTextField operandOne;
+    private JTextField operandTwo;
+    private JLabel result;
+    
+    private JLabel operandOneLabel;
+    private JLabel operandOneUnits;
+    private JLabel operandTwoLabel;
+    private JLabel operandTwoUnits;
+    private JLabel resultLabel;
+    private JLabel resultUnits;
 
     /**
      * Default Constructor
@@ -22,13 +44,43 @@ public class Panel extends Box implements ActionListener {
     public Panel() {
 
         super(BoxLayout.Y_AXIS);
+        
+        MODES = new String[]{"PQ", "PPF", "QPF"};
+        OP1_LABELS = new String[]{"Active Power", "Active Power", "Reactive Power"};
+        OP1_UNITS = new String[]{"W", "W", "VAr"};
+        OP2_LABELS = new String[]{"Reactive Power", "Power Factor", "Power Factor"};
+        OP2_UNITS = new String[]{"VAr", "", ""};
+        RESULT_LABELS = new String[]{"Power Factor", "Reactive Power", "Active Power"};
+        RESULT_UNITS = new String[]{"", "VAr", "W"};
 
-        Box topRow = Box.createHorizontalBox();
+        mode = new JComboBox(MODES);
+        mode.addActionListener(this);
+        mode.setSelectedIndex(PQ_MODE);
+        add(mode);
+        
+        Box opOneRow = Box.createHorizontalBox();
+        
+        operandOne = new JTextField("0");
+        operandOne.addActionListener(this);
+        
+        opOneRow.add(operandOneLabel);
+        opOneRow.add(operandOne);
+        opOneRow.add(operandOneUnits);
+        add(opOneRow);
 
-        topRow.add(buildModePanel(this));
-        topRow.setAlignmentX(LEFT_ALIGNMENT);
+        Box opTwoRow = Box.createHorizontalBox();
+        
+        operandTwo = new JTextField("0");
+        operandTwo.addActionListener(this);
+        
+        opTwoRow.add(operandTwoLabel);
+        opTwoRow.add(operandTwo);
+        opTwoRow.add(operandTwoUnits);
+        add(opTwoRow);
+        
+        Box resultRow = Box.createHorizontalBox();
+        result = new JLabel("0");
 
-        add(topRow);
     }
 
     /**
@@ -37,43 +89,6 @@ public class Panel extends Box implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-    }
-
-    /**
-     * Build a sub-panel to hold the mode selection components
-     * @param listener listener to handle actions
-     * @return new mode panel
-     */
-    private Box buildModePanel(ActionListener listener) {
-
-        Box panel = Box.createVerticalBox();
-
-        panel.setBorder(BorderFactory.createTitledBorder("Mode"));
-
-        JRadioButton pqButton = new JRadioButton("P/Q");
-        JRadioButton ppfButton = new JRadioButton("P/PF");
-        JRadioButton qpfButton = new JRadioButton("Q/PF");
-
-        pqButton.setActionCommand(PQ_ACTION);
-        ppfButton.setActionCommand(PPF_ACTION);
-        qpfButton.setActionCommand(QPF_ACTION);
-
-        panel.add(pqButton);
-        panel.add(ppfButton);
-        panel.add(qpfButton);
-
-        pqButton.addActionListener(listener);
-        ppfButton.addActionListener(listener);
-        qpfButton.addActionListener(listener);
-
-        ButtonGroup group = new ButtonGroup();
-        group.add(pqButton);
-        group.add(ppfButton);
-        group.add(qpfButton);
-
-        pqButton.setSelected(true); // initialize to PQ mode
-
-        return panel;
     }
 
 }
