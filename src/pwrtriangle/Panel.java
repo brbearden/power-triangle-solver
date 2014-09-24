@@ -5,6 +5,8 @@
  */
 package pwrtriangle;
 
+import javax.swing.*;
+
 /**
  *
  * @author bbearden
@@ -28,8 +30,7 @@ public class Panel extends javax.swing.JPanel {
     private void initComponents() {
 
         mode = new javax.swing.JComboBox();
-        operand1 = new javax.swing.JTextField();
-        operand2 = new javax.swing.JTextField();
+        operand1 = new javax.swing.JSpinner();
         result = new javax.swing.JTextField();
         opLabel1 = new javax.swing.JLabel();
         opUnit1 = new javax.swing.JLabel();
@@ -37,6 +38,7 @@ public class Panel extends javax.swing.JPanel {
         opUnit2 = new javax.swing.JLabel();
         resultLabel = new javax.swing.JLabel();
         resultUnit = new javax.swing.JLabel();
+        operand2 = new javax.swing.JSpinner();
 
         mode.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "P/Q", "P/PF", "Q/PF" }));
         mode.addActionListener(new java.awt.event.ActionListener() {
@@ -45,19 +47,10 @@ public class Panel extends javax.swing.JPanel {
             }
         });
 
-        operand1.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        operand1.setText("0");
-        operand1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                operand1ActionPerformed(evt);
-            }
-        });
-
-        operand2.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
-        operand2.setText("0");
-        operand2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                operand2ActionPerformed(evt);
+        operand1.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), Double.valueOf(0.0d), null, Double.valueOf(100.0d)));
+        operand1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                operand1StateChanged(evt);
             }
         });
 
@@ -74,6 +67,13 @@ public class Panel extends javax.swing.JPanel {
         opUnit2.setText("VAr");
 
         resultLabel.setText("Power Factor");
+
+        operand2.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), Double.valueOf(0.0d), null, Double.valueOf(100.0d)));
+        operand2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                operand2StateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -108,17 +108,18 @@ public class Panel extends javax.swing.JPanel {
                     .addComponent(opLabel1)
                     .addComponent(opUnit1)
                     .addComponent(operand1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(opLabel2)
-                    .addComponent(opUnit2)
-                    .addComponent(operand2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(opLabel2)
+                        .addComponent(opUnit2))
+                    .addComponent(operand2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(resultLabel)
                     .addComponent(result, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(resultUnit))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -133,22 +134,18 @@ public class Panel extends javax.swing.JPanel {
         else if(modeStr.equals("Q/PF"))
             setModeQpf();
 
-        operand1.setText("0");
-        operand2.setText("0");
+        ((SpinnerNumberModel)operand1.getModel()).setValue(0);
+        ((SpinnerNumberModel)operand2.getModel()).setValue(0);
         result.setText("0");
     }//GEN-LAST:event_modeActionPerformed
 
-    private void operand1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_operand1ActionPerformed
-
+    private void operand1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_operand1StateChanged
         calculateResult();
+    }//GEN-LAST:event_operand1StateChanged
 
-    }//GEN-LAST:event_operand1ActionPerformed
-
-    private void operand2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_operand2ActionPerformed
-
+    private void operand2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_operand2StateChanged
         calculateResult();
-
-    }//GEN-LAST:event_operand2ActionPerformed
+    }//GEN-LAST:event_operand2StateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -157,8 +154,8 @@ public class Panel extends javax.swing.JPanel {
     private javax.swing.JLabel opLabel2;
     private javax.swing.JLabel opUnit1;
     private javax.swing.JLabel opUnit2;
-    private javax.swing.JTextField operand1;
-    private javax.swing.JTextField operand2;
+    private javax.swing.JSpinner operand1;
+    private javax.swing.JSpinner operand2;
     private javax.swing.JTextField result;
     private javax.swing.JLabel resultLabel;
     private javax.swing.JLabel resultUnit;
@@ -207,8 +204,8 @@ public class Panel extends javax.swing.JPanel {
 
         String modeStr = (String)mode.getSelectedItem();
         double resultVal = 0;
-        double op1 = Double.parseDouble(operand1.getText());
-        double op2 = Double.parseDouble(operand2.getText());
+        double op1 = ((SpinnerNumberModel)operand1.getModel()).getNumber().doubleValue();
+        double op2 = ((SpinnerNumberModel)operand2.getModel()).getNumber().doubleValue();
 
         if(modeStr.equals("P/Q")) {
             resultVal = Solver.solveForPf(op1, op2);
